@@ -13,16 +13,16 @@ shinyServer(function(input, output) {
     #(input$time)
   #})
   
-  observeEvent(input$submit,{
+  observeEvent(input$predict,{
     #using the input from UI
-    
+    print(input$Algo)
     print(input$zip)
     print(input$start)
     print(input$sub)
     print(input$date)
     print(input$time)
     
-
+    if(input$Algo == "Multiple Regression"){
     require(caret)
     require(klaR)
     zip.code = as.factor(input$zip)
@@ -62,8 +62,9 @@ shinyServer(function(input, output) {
     
     #input$zip <- floor(predict.data$availability)
     output$response <- renderText({
-      out <- paste("bike availability is",ceiling(predict.data$availability), sep=" ")})
-  
+      out <- paste("Bike availability is",ceiling(predict.data$availability), sep=" ")})
+  }  
+    
   })
   
   
