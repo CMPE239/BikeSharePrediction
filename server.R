@@ -165,10 +165,28 @@ shinyServer(function(input, output) {
       bikeshare.gbm.predict$availability <- predict(bikeshare.gbm.model, newdata = bikeshare.gbm.predict, n.trees = 1000)
       output$response <- renderText({
         out <- paste("Bike availability using GBM is",ceiling(bikeshare.gbm.predict$availability), sep=" ")})
-      output$plotdesc1 <- renderText({" "})
-      output$plotdesc2 <- renderText({" "})
-      output$plotdesc4 <- renderText({" "})
-      output$plotdesc3 <- renderText({" "})
+      output$plotdesc1 <- renderText({"Plot for Start terminal: "})
+      
+      output$plot1<- renderPlot({
+        plot(bikeshare.gbm.model, 'Start.Terminal')
+      })
+      
+      output$plotdesc2 <- renderText({"Plot for Events: "})
+      
+      output$plot2<- renderPlot({
+        plot(bikeshare.gbm.model, 'Events')
+      })
+      
+      output$plotdesc3 <- renderText({"Plot for Zip Code: "})
+      
+      output$plot3<- renderPlot({
+        plot(bikeshare.gbm.model, 'Zip.Code')
+      })
+      output$plotdesc4 <- renderText({"Plot for Subscription Type: "})
+      
+      output$plot4<- renderPlot({
+        plot(bikeshare.gbm.model, 'Subscription.Type')
+      })
     }
     
   })
