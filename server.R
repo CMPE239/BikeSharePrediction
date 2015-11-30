@@ -9,6 +9,7 @@ shinyServer(function(input, output) {
     require(caret)
     require(klaR)
     require(ggplot2)
+    require(randomForest)
     end.terminal = as.factor(input$end)
     start.terminal = as.factor(input$start)
     zip.code = as.factor(input$zip)
@@ -80,7 +81,7 @@ shinyServer(function(input, output) {
       
       
       
-    } else {
+    } else if(input$Algo == "Random Forest"){
       
       print("Inside Random Forest Block")
       
@@ -130,6 +131,44 @@ shinyServer(function(input, output) {
       
       
       
+    } else {
+       
+      print("Inside GBM block...")
+      #Step 1: Use subset of processed dataframe (contains datasets for top 6 Start.Terminals)
+      BikeShare.Data.Final.gbm <- BikeShare.Data.Final
+      
+      #Step 2: Divide data into Train and Test
+      bikeshare.gbm.indexes <- sample(1:nrow(BikeShare.Data.Final.gbm), 
+                                      0.95*nrow(BikeShare.Data.Final.gbm), replace=F)
+      
+      #Train
+      bikeshare.gbm.train <- BikeShare.Data.Final.gbm[bikeshare.gbm.indexes, ]
+      #Test
+      bikeshare.gbm.test <- BikeShare.Data.Final.gbm[-bikeshare.gbm.indexes, ]
+      
+      
+      #Step 3: Build model
+      bikeshare.gbm.model <- gbm(Bikes.Available.Per.Hour ~ 
+                                   Zip.Code + Start.Terminal +
+                                   End.Terminal+
+                                   Subscription.Type + 
+                                   Events, 
+                                 bikeshare.gbm.train, 
+                                 distribution = "poisson", 
+                                 n.trees = 1000, 
+                                 bag.fraction = 0.75)
+      
+      ##create test data using inputs from the user to predict bike availability
+      bikeshare.gbm.predict <- data.frame(Zip.Code = zip.code, Start.Terminal = start.terminal, Subscription.Type= subscriber.type, End.Terminal = end.terminal, Events = event)
+      
+      #Step 4: Predict
+      bikeshare.gbm.predict$availability <- predict(bikeshare.gbm.model, newdata = bikeshare.gbm.predict, n.trees = 1000)
+      output$response <- renderText({
+        out <- paste("Bike availability using GBM is",ceiling(bikeshare.gbm.predict$availability), sep=" ")})
+      output$plotdesc1 <- renderText({" "})
+      output$plotdesc2 <- renderText({" "})
+      output$plotdesc4 <- renderText({" "})
+      output$plotdesc3 <- renderText({" "})
     }
     
   })

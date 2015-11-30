@@ -11,7 +11,7 @@ shinyUI(fluidPage(
   sidebarLayout(
     sidebarPanel(
       selectInput("Algo", "Choose an Algorithm:",
-                  choices = c("Multiple Regression", "Random Forest")),
+                  choices = c("Multiple Regression", "Random Forest","GBM")),
       textInput("zip", "Zip Code:", "94107"),
       textInput("start", "Start Terminal:", "61"),
       textInput("sub", "Subscription Type:", "Customer"),
