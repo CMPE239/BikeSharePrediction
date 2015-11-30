@@ -1,4 +1,5 @@
 library(shiny)
+library(plotly)
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
@@ -23,7 +24,15 @@ shinyUI(fluidPage(
 
     # Show a plot of the generated distribution
     mainPanel(
-      textOutput("response")
+      textOutput("response"),
+      textOutput("plotdesc1"),
+      plotOutput("plot1"),
+      textOutput("plotdesc2"),
+      plotOutput("plot2"),
+      textOutput("plotdesc3"),
+      plotOutput("plot3"),
+      textOutput("plotdesc4"),
+      plotOutput("plot4")
       
     )
   )

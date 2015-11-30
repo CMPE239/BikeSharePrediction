@@ -23,6 +23,7 @@ shinyServer(function(input, output) {
     print(input$time)
     require(caret)
     require(klaR)
+    require(ggplot2)
     end.terminal = as.factor(input$end)
     start.terminal = as.factor(input$start)
     zip.code = as.factor(input$zip)
@@ -66,6 +67,29 @@ shinyServer(function(input, output) {
       #input$zip <- floor(predict.data$availability)
       output$response <- renderText({
         out <- paste("Bike availability using Multiple Regression is",ceiling(predict.data$availability), sep=" ")})
+    
+      output$plotdesc1 <- renderText({"Plot for Start terminal versus Bike Availability: "})
+      
+      output$plot1<- renderPlot({
+        plot(data_test$Start.Terminal,data_test$Bikes.Available.Per.Hour)
+      })
+      
+      output$plotdesc2 <- renderText({"Plot for Events versus Bike Availability: "})
+      
+      output$plot2<- renderPlot({
+        plot(data_test$Events,data_test$Bikes.Available.Per.Hour)
+      })
+      
+      output$plotdesc3 <- renderText({"Plot for Zip Code versus Bike Availability: "})
+      
+      output$plot3<- renderPlot({
+        plot(data_test$Zip.Code,data_test$Bikes.Available.Per.Hour)
+      })
+      output$plotdesc4 <- renderText({"Plot for Subscription Type versus Bike Availability: "})
+      
+      output$plot4<- renderPlot({
+        plot(data_test$Subscription.Type,data_test$Bikes.Available.Per.Hour)
+      })
       
       
       
