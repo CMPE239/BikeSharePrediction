@@ -12,8 +12,10 @@ shinyUI(fluidPage(
       selectInput("Algo", "Choose an Algorithm:",
                   choices = c("Multiple Regression", "Random Forest")),
       textInput("zip", "Zip Code:", "94107"),
-      textInput("start", "Start Terminal:", "41"),
+      textInput("start", "Start Terminal:", "61"),
       textInput("sub", "Subscription Type:", "Customer"),
+      textInput("event", "Event:", "Fog"),
+      textInput("end", "End Terminal:", "31"),
       textInput("date", "Date:", "2015-11-29"),
       textInput("time", "Time:", "15:00:00"),
       actionButton("predict", "Predict")
