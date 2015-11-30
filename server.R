@@ -112,6 +112,22 @@ shinyServer(function(input, output) {
       output$plot1<- renderPlot({
         plot(BikeShare.Data.Final.Subset.RF.model,log="y")
       })
+      output$plotdesc1 <- renderText({" "})
+      output$plotdesc2 <- renderText({" "})
+      output$plotdesc4 <- renderText({" "})
+      output$plotdesc3 <- renderText({" "})
+      output$plot2<- renderPlot({
+        plot(BikeShare.Data.Final.Subset.RF.test$Events,BikeShare.Data.Final.Subset.RF.test$Bikes.Available.Per.Hour)
+      })
+      
+      output$plot3<- renderPlot({
+        plot(BikeShare.Data.Final.Subset.RF.test$Zip.Code,BikeShare.Data.Final.Subset.RF.test$Bikes.Available.Per.Hour)
+      })
+      
+      output$plot4<- renderPlot({
+        plot(BikeShare.Data.Final.Subset.RF.test$Subscription.Type,BikeShare.Data.Final.Subset.RF.test$Bikes.Available.Per.Hour)
+      })
+      
       
       
     }
