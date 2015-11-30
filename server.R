@@ -20,6 +20,8 @@ shinyServer(function(input, output) {
     
     if(input$Algo == "Multiple Regression"){
       
+      print("Inside Multiple Regression Block")
+      
       ##step1: we convert to a factor to indicate that it should be treated as a categorical variable.
       BikeShare.Data.Final$Zip.Code <- factor(BikeShare.Data.Final$Zip.Code)
       BikeShare.Data.Final$Start.Terminal <- factor(BikeShare.Data.Final$Start.Terminal)
@@ -79,7 +81,9 @@ shinyServer(function(input, output) {
       
       
     } else {
-      print("inside else")
+      
+      print("Inside Random Forest Block")
+      
       ##step1: we convert to a factor to indicate that it should be treated as a categorical variable.
       BikeShare.Data.Final.Subset.RF$Zip.Code <- factor(BikeShare.Data.Final.Subset.RF$Zip.Code)
       BikeShare.Data.Final.Subset.RF$Start.Terminal <- factor(BikeShare.Data.Final.Subset.RF$Start.Terminal)
@@ -94,18 +98,21 @@ shinyServer(function(input, output) {
       
       #Step 3: Build RF model using -> Start.Terminal, Start.Date.Hour, Zip.Code, Start.Station, 
       #        Subscription.Type, Bikes.Available.Per.Hour
-      #BikeShare.Data.Final.Subset.RF.model <- randomForest(Bikes.Available.Per.Hour ~ ., data = BikeShare.Data.Final.Subset.RF.train, ntree = 501)
+      BikeShare.Data.Final.Subset.RF.model <- randomForest(Bikes.Available.Per.Hour ~ ., data = BikeShare.Data.Final.Subset.RF.train, ntree = 50)
       
       ##create new test data frame for testing the randon forest model
       ##create new test data frame for testing the randon forest model
-      BikeShare.Data.Final.Subset.RF.test <- rbind(BikeShare.Data.Final.Subset.RF.test,data.frame(Zip.Code = zip.code, Start.Terminal = start.terminal,End.Terminal= end.terminal,Events=event , Subscription.Type= subscriber.type, Start.Date.Hour = input.date.time,Start.Station = "2nd at Townsend", End.Station ="Market at Sansome",Bikes.Available.Per.Hour=10))
-      BikeShare.Data.Final.Subset.RF.test$Start.Date.Hour <- as.POSIXct(BikeShare.Data.Final.Subset.RF.test$Start.Date.Hour, format = "%Y-%m-%d %H:%M:%S")
-      BikeShare.Data.Final.Subset.RF.test$Start.Station <- factor(BikeShare.Data.Final.Subset.RF.test$Start.Station)
-      BikeShare.Data.Final.Subset.RF.test$End.Station <- factor(BikeShare.Data.Final.Subset.RF.test$End.Station)
+      #BikeShare.Data.Final.Subset.RF.test <- rbind(BikeShare.Data.Final.Subset.RF.test,data.frame(Zip.Code = zip.code, Start.Terminal = start.terminal,End.Terminal= end.terminal,Events=event , Subscription.Type= subscriber.type, Start.Date.Hour = input.date.time,Start.Station = "2nd at Townsend", End.Station ="Market at Sansome",Bikes.Available.Per.Hour=10))
+      #BikeShare.Data.Final.Subset.RF.test$Start.Date.Hour <- as.POSIXct(BikeShare.Data.Final.Subset.RF.test$Start.Date.Hour, format = "%Y-%m-%d %H:%M:%S")
+      #BikeShare.Data.Final.Subset.RF.test$Start.Station <- factor(BikeShare.Data.Final.Subset.RF.test$Start.Station)
+      #BikeShare.Data.Final.Subset.RF.test$End.Station <- factor(BikeShare.Data.Final.Subset.RF.test$End.Station)
       
+      ##Step4: Return the Legend for Random Forest Plot in R
+      output$response <- renderText({"Legend for Random Forest Plot in R: "})
+      output$plot1<- renderPlot({
+        plot(BikeShare.Data.Final.Subset.RF.model,log="y")
+      })
       
-      #Step 4: Predict over test dataframe
-      #BikeShare.Data.Final.Subset.RF.test$availability <- predict(BikeShare.Data.Final.Subset.RF.model, newdata = BikeShare.Data.Final.Subset.RF.test)
       
     }
     
